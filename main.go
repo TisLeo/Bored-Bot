@@ -40,11 +40,11 @@ func main() {
 		log.Fatal("Error loading .env: ", err)
 	}
 
-	log.Info("Loading bot client and handlers...")
 	// Create client. Add intents and event listeners
+	log.Info("Loading bot client and handlers...")
 	client, err := disgo.New(os.Getenv("BORED_BOT_TOKEN"),
 		bot.WithGatewayConfigOpts(
-			gateway.WithIntents(gateway.IntentsAll),
+			gateway.WithIntents(gateway.IntentGuildMessages),
 			gateway.WithPresence(gateway.NewWatchingPresence("Bored people", discord.OnlineStatusOnline, false)),
 		),
 		bot.WithEventListenerFunc(commands.HandlePingCommand),
@@ -62,14 +62,14 @@ func main() {
 		log.Info("Shutting down Bored Bot...")
 	}()
 
-	log.Info("Registering slash commands...")
 	// Register slash commands
+	log.Info("Registering slash commands...")
 	if _, err := client.Rest().SetGlobalCommands(client.ApplicationID(), slashCommands); err != nil {
 		log.Fatal("Error registering slash commands: ", err)
 	}
 
-	log.Info("Opening gateway...")
 	// Open gateway
+	log.Info("Opening gateway...")
 	if err := client.OpenGateway(context.TODO()); err != nil {
 		log.Fatal("Error connecting to gateway: ", err)
 	}
@@ -80,7 +80,7 @@ func main() {
 	| __ -| . |  _| -_| . |  | __ -| . |  _|  |    -| -_| .'| . | | |
 	|_____|___|_| |___|___|  |_____|___|_|    |__|__|___|__,|___|_  |
 	                                                            |___|
-	\n`)
+	` + "\n")
 
 	s := make(chan os.Signal, 1)
 	signal.Notify(s, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
