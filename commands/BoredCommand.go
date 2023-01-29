@@ -66,7 +66,7 @@ func HandleBoredCommand(e *events.ApplicationCommandInteractionCreate) {
 
 // Returns a new boredActivity.
 func getNewActivity() (*boredActivity, error) {
-	resp, err := doApiRequest()
+	resp, err := doApiRequest(url)
 	if err != nil {
 		return nil, err
 	}
@@ -79,7 +79,7 @@ func getNewActivity() (*boredActivity, error) {
 }
 
 // Sends a new GET response from BoredAPI's API. Returns string of data.
-func doApiRequest() (string, error) {
+func doApiRequest(url string) (string, error) {
 	var httpClient = &http.Client{Timeout: 10 * time.Second}
 	response, err := httpClient.Get(url)
 
@@ -99,21 +99,11 @@ func doApiRequest() (string, error) {
 
 // Sends a new GET request to BoredAPI's API with a specific given key. Returns string of data.
 func doApiRequestWithKey(key string) (string, error) {
-	var httpClient = &http.Client{Timeout: 10 * time.Second}
-	response, err := httpClient.Get(urlWithKey + key)
-
-	if err != nil {
-		return "", fmt.Errorf("error with a GET request to '%s': %s", url, err.Error())
+	if resp, err := doApiRequest(urlWithKey + key); err != nil {
+		return "", err
+	} else {
+		return resp, nil
 	}
-
-	defer response.Body.Close()
-
-	data, err := io.ReadAll(response.Body)
-	if err != nil {
-		return "", fmt.Errorf("error parsing the response body: %s", err.Error())
-	}
-
-	return string(data), nil
 }
 
 // Returns a new boredActivity based on the string of API's json response.
