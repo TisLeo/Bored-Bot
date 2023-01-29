@@ -80,7 +80,7 @@ func main() {
 	| __ -| . |  _| -_| . |  | __ -| . |  _|  |    -| -_| .'| . | | |
 	|_____|___|_| |___|___|  |_____|___|_|    |__|__|___|__,|___|_  |
 	                                                            |___|
-	`)
+	\n`)
 
 	s := make(chan os.Signal, 1)
 	signal.Notify(s, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)

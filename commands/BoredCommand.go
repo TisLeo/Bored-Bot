@@ -4,9 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"image"
-	"image/png"
 	"io"
+	"main/utils"
 	"net/http"
 	"strconv"
 	"strings"
@@ -142,7 +141,7 @@ func (activity boredActivity) generateImageData() ([]byte, error) {
 
 	activity.drawStringsToImg(ctx)
 
-	byteImg, err := imgToBytes(ctx.Image())
+	byteImg, err := utils.ImgToBytes(ctx.Image())
 	if err != nil {
 		return nil, err
 	}
@@ -164,16 +163,6 @@ func (activity boredActivity) drawStringsToImg(ctx *gg.Context) {
 	ctx.DrawStringAnchored(fmt.Sprintf("%.2f", activity.Price), 86, 440, 0.5, 0.5)
 	ctx.DrawStringAnchored(activity.Type, 320, 440, 0.5, 0.5)
 	ctx.DrawStringAnchored(strconv.Itoa(activity.Participants), 538, 440, 0.5, 0.5)
-}
-
-// Converts an Image to a byte array.
-func imgToBytes(img image.Image) ([]byte, error) {
-	buffer := new(bytes.Buffer)
-	if err := png.Encode(buffer, img); err != nil {
-		return nil, err
-	}
-
-	return buffer.Bytes(), nil
 }
 
 // Sets an interaction response to the 'Get Transcript' button that shows when a user sends a /activity command.
