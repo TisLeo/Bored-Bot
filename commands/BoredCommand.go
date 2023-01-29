@@ -99,11 +99,7 @@ func doApiRequest(url string) (string, error) {
 
 // Sends a new GET request to BoredAPI's API with a specific given key. Returns string of data.
 func doApiRequestWithKey(key string) (string, error) {
-	if resp, err := doApiRequest(urlWithKey + key); err != nil {
-		return "", err
-	} else {
-		return resp, nil
-	}
+	return doApiRequest(urlWithKey + key)
 }
 
 // Returns a new boredActivity based on the string of API's json response.
@@ -176,7 +172,7 @@ func HandleTranscriptButtonResponse(event *events.ComponentInteractionCreate) {
 		if err != nil {
 			embed = getErrorEmbed()
 		} else {
-			embed = getActivityEmbed(*activity)
+			embed = activity.getActivityEmbed()
 		}
 	}
 
@@ -202,7 +198,7 @@ func getImgErrorEmbed() discord.Embed {
 }
 
 // Returns an embed with a given activity's values
-func getActivityEmbed(activity boredActivity) discord.Embed {
+func (activity boredActivity) getActivityEmbed() discord.Embed {
 	embedDesc := fmt.Sprintf("Activity **»** *%s*\n\nType **»** *%s*\n\nRelative Price **»** *%.2f*\n\nParticipants **»** *%d*",
 		activity.Activity, activity.Type, activity.Price, activity.Participants)
 

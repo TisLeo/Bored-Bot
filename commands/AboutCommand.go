@@ -16,7 +16,6 @@ func HandleAboutCommand(e *events.ApplicationCommandInteractionCreate) {
 		return
 	}
 
-	//todo: add logo as thumbnail & discord server for contact link
 	var message = discord.NewMessageCreateBuilder()
 
 	embed := discord.Embed{
