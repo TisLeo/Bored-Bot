@@ -3,7 +3,6 @@ package commands
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"image"
 	"image/png"
@@ -112,7 +111,7 @@ func doApiRequestWithKey(key string) (string, error) {
 
 	data, err := io.ReadAll(response.Body)
 	if err != nil {
-		return "", errors.New("error parsing the response body: " + err.Error())
+		return "", fmt.Errorf("error parsing the response body: %s", err.Error())
 	}
 
 	return string(data), nil

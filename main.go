@@ -22,7 +22,7 @@ var slashCommands = []discord.ApplicationCommandCreate{
 	},
 	discord.SlashCommandCreate{
 		Name:        "activity",
-		Description: "Bored? Try this...",
+		Description: "Bored? Get something to do",
 	},
 	discord.SlashCommandCreate{
 		Name:        "about",
@@ -65,13 +65,13 @@ func main() {
 	log.Info("Registering slash commands...")
 	// Register slash commands
 	if _, err := client.Rest().SetGlobalCommands(client.ApplicationID(), slashCommands); err != nil {
-		log.Fatal("Error registering slash commands:", err)
+		log.Fatal("Error registering slash commands: ", err)
 	}
 
 	log.Info("Opening gateway...")
 	// Open gateway
 	if err := client.OpenGateway(context.TODO()); err != nil {
-		log.Fatal("Could not connect to gateway: ", err)
+		log.Fatal("Error connecting to gateway: ", err)
 	}
 
 	log.Info(`

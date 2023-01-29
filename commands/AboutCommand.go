@@ -6,7 +6,7 @@ import (
 	"github.com/disgoorg/log"
 )
 
-// Handles the logic for the ping command. Sends a message to the user with bot's latency.
+// Handles the logic for the about command. Sends a message to the user with bot's latency.
 func HandleAboutCommand(e *events.ApplicationCommandInteractionCreate) {
 	if data := e.SlashCommandInteractionData(); data.CommandName() != "about" {
 		return
@@ -20,10 +20,10 @@ func HandleAboutCommand(e *events.ApplicationCommandInteractionCreate) {
 		Fields: []discord.EmbedField{
 			{
 				Name:  "Commands",
-				Value: "• `/activity` - get something to do when you're bored.\n• `/ping` - get the bot's latency\n• `/about` - this...",
+				Value: "• `/activity` - get something to do when you're bored.\n• `/ping` - get the bot's latency\n• `/about` - this...\n",
 			}, {
 				Name:  "Tech Stack",
-				Value: "• [Go language](https://go.dev/)\n• [disgo](https://github.com/disgoorg/disgo) library\n• [gg](https://github.com/fogleman/gg) graphics library",
+				Value: "• [Go](https://go.dev/) Language\n• [DisGo](https://github.com/disgoorg/disgo) library\n• [gg](https://github.com/fogleman/gg) graphics library\n",
 			},
 			{
 				Name:  "Help",
