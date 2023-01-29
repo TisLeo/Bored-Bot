@@ -21,7 +21,7 @@ var slashCommands = []discord.ApplicationCommandCreate{
 		Description: "Get bot's latency",
 	},
 	discord.SlashCommandCreate{
-		Name:        "activity",
+		Name:        "bored",
 		Description: "Bored? Get something to do",
 	},
 	discord.SlashCommandCreate{

@@ -35,7 +35,7 @@ type boredActivity struct {
 
 // Handles the logic for the bored command.
 func HandleBoredCommand(e *events.ApplicationCommandInteractionCreate) {
-	if data := e.SlashCommandInteractionData(); data.CommandName() != "activity" {
+	if data := e.SlashCommandInteractionData(); data.CommandName() != "bored" {
 		return
 	}
 
@@ -44,7 +44,7 @@ func HandleBoredCommand(e *events.ApplicationCommandInteractionCreate) {
 
 		activity, err := getNewActivity()
 		if err != nil {
-			log.Errorf("[Bored Activity] error getting a new activity: %s", err.Error())
+			log.Errorf("[Bored Command] error getting a new activity: %s", err.Error())
 			messageToSend.AddEmbeds(getErrorEmbed())
 		} else {
 			// button ID is appended with the BoredAPI response's key, used for transcript
@@ -59,7 +59,7 @@ func HandleBoredCommand(e *events.ApplicationCommandInteractionCreate) {
 		}
 
 		if err := e.CreateMessage(messageToSend.Build()); err != nil {
-			log.Errorf("[Bored Activity] error responding to SlashCommand '/activity': %s", err.Error())
+			log.Errorf("Error responding to slash command '/activity': %s", err.Error())
 		}
 	}()
 }

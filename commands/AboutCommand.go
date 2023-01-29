@@ -31,7 +31,7 @@ func HandleAboutCommand(e *events.ApplicationCommandInteractionCreate) {
 			},
 			{
 				Name:  "Help",
-				Value: "Contact the developer in the support forum channel at [tbd]()",
+				Value: "Use the help channel in the [support server](https://discord.gg/yx3gkv6Why).",
 			},
 		},
 		Color: 0x4B63CF,
