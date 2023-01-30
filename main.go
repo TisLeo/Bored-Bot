@@ -9,26 +9,13 @@ import (
 
 	"github.com/disgoorg/disgo"
 	"github.com/disgoorg/disgo/bot"
+	"github.com/disgoorg/disgo/cache"
 	"github.com/disgoorg/disgo/discord"
+	"github.com/disgoorg/disgo/events"
 	"github.com/disgoorg/disgo/gateway"
 	"github.com/disgoorg/log"
 	"github.com/joho/godotenv"
 )
-
-var slashCommands = []discord.ApplicationCommandCreate{
-	discord.SlashCommandCreate{
-		Name:        "ping",
-		Description: "Get bot's latency",
-	},
-	discord.SlashCommandCreate{
-		Name:        "bored",
-		Description: "Bored? Get something to do",
-	},
-	discord.SlashCommandCreate{
-		Name:        "about",
-		Description: "About Bored Bot",
-	},
-}
 
 func main() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
@@ -44,13 +31,19 @@ func main() {
 	log.Info("Loading bot client and handlers...")
 	client, err := disgo.New(os.Getenv("BORED_BOT_TOKEN"),
 		bot.WithGatewayConfigOpts(
-			gateway.WithIntents(gateway.IntentGuildMessages),
+			gateway.WithIntents(gateway.IntentGuilds),
 			gateway.WithPresence(gateway.NewWatchingPresence("Bored people", discord.OnlineStatusOnline, false)),
 		),
 		bot.WithEventListenerFunc(commands.HandlePingCommand),
 		bot.WithEventListenerFunc(commands.HandleBoredCommand),
 		bot.WithEventListenerFunc(commands.HandleTranscriptButtonResponse),
 		bot.WithEventListenerFunc(commands.HandleAboutCommand),
+		bot.WithEventListenerFunc(func(e *events.GuildsReady) {
+			log.Infof("Bot currently in: %d server(s)", e.Client().Caches().Guilds().Len())
+		}),
+		bot.WithCacheConfigOpts(
+			cache.WithCacheFlags(cache.FlagGuilds),
+		),
 	)
 	if err != nil {
 		log.Fatal("Error while building disgo: ", err)
@@ -64,7 +57,7 @@ func main() {
 
 	// Register slash commands
 	log.Info("Registering slash commands...")
-	if _, err := client.Rest().SetGlobalCommands(client.ApplicationID(), slashCommands); err != nil {
+	if _, err := client.Rest().SetGlobalCommands(client.ApplicationID(), commands.Commands); err != nil {
 		log.Fatal("Error registering slash commands: ", err)
 	}
 

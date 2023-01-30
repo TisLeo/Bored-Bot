@@ -8,6 +8,11 @@ import (
 	"github.com/disgoorg/log"
 )
 
+var pingCommand = discord.SlashCommandCreate{
+	Name:        "ping",
+	Description: "Get bot's latency",
+}
+
 // Handles the logic for the ping command. Sends a message to the user with bot's latency.
 func HandlePingCommand(e *events.ApplicationCommandInteractionCreate) {
 	if data := e.SlashCommandInteractionData(); data.CommandName() != "ping" {
@@ -20,8 +25,8 @@ func HandlePingCommand(e *events.ApplicationCommandInteractionCreate) {
 		Color: 0x4bb84b,
 	}
 
-	msg := discord.NewMessageCreateBuilder().AddEmbeds(embed).Build()
-	if err := e.CreateMessage(msg); err != nil {
+	message := discord.NewMessageCreateBuilder().AddEmbeds(embed).Build()
+	if err := e.CreateMessage(message); err != nil {
 		log.Errorf("Error responding to slash command '/ping': %s", err.Error())
 	}
 }
