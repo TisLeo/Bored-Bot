@@ -121,7 +121,7 @@ func HandleBoredCommand(e *events.ApplicationCommandInteractionCreate) {
 		}
 
 		if err := e.CreateMessage(message.Build()); err != nil {
-			log.Errorf("Error responding to slash command '/activity': %s", err.Error())
+			log.Errorf("Error responding to slash command '/bored': %s", err.Error())
 		}
 	}()
 }
