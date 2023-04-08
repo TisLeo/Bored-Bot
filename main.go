@@ -10,7 +10,6 @@ import (
 	"github.com/disgoorg/disgo"
 	"github.com/disgoorg/disgo/bot"
 	"github.com/disgoorg/disgo/cache"
-	"github.com/disgoorg/disgo/discord"
 	"github.com/disgoorg/disgo/events"
 	"github.com/disgoorg/disgo/gateway"
 	"github.com/disgoorg/log"
@@ -27,23 +26,21 @@ func main() {
 		log.Fatal("Error loading .env: ", err)
 	}
 
-	// Create client. Add intents and event listeners
+	// Create client. Add intents, event listeners, and caches
 	log.Info("Loading bot client and handlers...")
 	client, err := disgo.New(os.Getenv("BORED_BOT_TOKEN"),
 		bot.WithGatewayConfigOpts(
 			gateway.WithIntents(gateway.IntentGuilds),
-			gateway.WithPresence(gateway.NewWatchingPresence("Bored people", discord.OnlineStatusOnline, false)),
+			gateway.WithPresenceOpts(gateway.WithWatchingActivity("bored people!")),
 		),
 		bot.WithEventListenerFunc(commands.HandlePingCommand),
 		bot.WithEventListenerFunc(commands.HandleBoredCommand),
 		bot.WithEventListenerFunc(commands.HandleTranscriptButtonResponse),
 		bot.WithEventListenerFunc(commands.HandleAboutCommand),
 		bot.WithEventListenerFunc(func(e *events.GuildsReady) {
-			log.Infof("Bot currently in: %d server(s)", e.Client().Caches().Guilds().Len())
+			log.Infof("Bot currently in %d server(s)", e.Client().Caches().GuildsLen())
 		}),
-		bot.WithCacheConfigOpts(
-			cache.WithCacheFlags(cache.FlagGuilds),
-		),
+		bot.WithCacheConfigOpts(cache.WithCaches(cache.FlagGuilds)),
 	)
 	if err != nil {
 		log.Fatal("Error while building disgo: ", err)
@@ -51,8 +48,8 @@ func main() {
 
 	// Shutdown logic
 	defer func() {
-		client.Close(context.TODO())
 		log.Info("Shutting down Bored Bot...")
+		client.Close(context.TODO())
 	}()
 
 	// Register slash commands
@@ -67,6 +64,7 @@ func main() {
 		log.Fatal("Error connecting to gateway: ", err)
 	}
 
+	// Tell the world that Bored Bot is ready
 	log.Info(`
 	_____               _    _____     _      _____           _     
 	| __  |___ ___ ___ _| |  | __  |___| |_   | __  |___ ___ _| |_ _ 

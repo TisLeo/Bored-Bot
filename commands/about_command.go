@@ -2,7 +2,7 @@ package commands
 
 import (
 	"bytes"
-	"main/utils"
+	"main/utils/images"
 
 	"github.com/disgoorg/disgo/discord"
 	"github.com/disgoorg/disgo/events"
@@ -66,7 +66,7 @@ func getThumbnail() ([]byte, error) {
 		return nil, err
 	}
 
-	if imgData, err := utils.ImgToBytes(logo); err != nil {
+	if imgData, err := images.ImgToBytes(logo); err != nil {
 		return nil, err
 	} else {
 		return imgData, nil
