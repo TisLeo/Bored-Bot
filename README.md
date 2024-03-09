@@ -17,7 +17,3 @@ Bored Bot is a simple-to-use Discord bot which allows you to get something to do
 
 ### Planned Features
 - [x] Customising type/price/participants with each command
-
-### Help 
-- [Invite to your server](https://canary.discord.com/api/oauth2/authorize?client_id=959141306205081610&permissions=2147601472&scope=bot%20applications.commands)
-- [Support Server](https://discord.gg/yx3gkv6Why)
